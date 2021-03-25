@@ -161,7 +161,7 @@ class AssignmentGroup: Hashable {
         var assignmentGroups = [AssignmentGroup]()
         while let result = results.next() {
             let name = result[0] as! String
-Log.info(message: "[DEBUUUUUUG] result[1] : \(result[1]?)")
+Log.info(message: "[DEBUUUUUUG] result[1] : \(result[1] as Optional)")
             let assignmentIDs = (result[1] as? String)?.jsonDecodeForceTry() as? [String] ?? []
             let assignmentIDsInt = assignmentIDs.map { UInt32($0) } as? [UInt32] ?? []
 Log.info(message: "[DEBUUUUUUG] assignmentIDs: \(assignmentIDsInt)")
