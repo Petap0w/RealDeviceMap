@@ -130,6 +130,7 @@ class ApiRequestHandler {
         let formatted =  request.param(name: "formatted")?.toBool() ?? false
         let lastUpdate = request.param(name: "last_update")?.toUInt32() ?? 0
         let showAssignments = request.param(name: "show_assignments")?.toBool() ?? false
+        let showAssignmentGroups = request.param(name: "show_assignmentgroups")?.toBool() ?? false
         let showIVQueue = request.param(name: "show_ivqueue")?.toBool() ?? false
         let showDiscordRules = request.param(name: "show_discordrules")?.toBool() ?? false
         let showStatus = request.param(name: "show_status")?.toBool() ?? false
@@ -1363,6 +1364,41 @@ class ApiRequestHandler {
             }
             data["assignments"] = jsonArray
 
+        }
+
+        if showAssignmentGroups && perms.contains(.admin) {
+
+            let assignmentGroups = try? AssignmentGroup.getAll(mysql: mysql)
+            let assignments = try? Assignment.getAll(mysql: mysql)
+
+            var jsonArray = [[String: Any]]()
+
+            if assignmentGroups != nil {
+                for assignmentGroup in assignmentGroups! {
+                    let assignmentsInGroup = assignments?.filter({ assignmentGroup.assignmentIDs.contains($0.id) }) ?? []
+
+                    var assignmentGroupData = [String: Any]()
+                    assignmentGroupData["name"] = assignmentGroup.name
+
+                    if formatted {
+                        assignmentGroupData["assignements"] = assignements.joined(separator: ", ")
+                        let id = assignmentGroup.name.encodeUrl()!
+                        assignmentGroupData["buttons"] = "<div class=\"btn-group\" role=\"group\"><a " +
+                            "href=\"/dashboard/assignmentgroup/start/\(id)\" " +
+                            "role=\"button\" class=\"btn btn-success\">Start</a>" +
+                            "<a href=\"/dashboard/assignmentgroup/edit/\(id)\" " +
+                            "role=\"button\" class=\"btn btn-primary\">Edit</a>" +
+                            "<a href=\"/dashboard/assignmentgroup/delete/\(id)\" " +
+                            "role=\"button\" class=\"btn btn-danger\">Delete</a></div>"
+                    } else {
+                        assignmentGroupData["assignements"] = assignements
+                    }
+
+                    jsonArray.append(assignmentGroupData)
+                }
+            }
+
+            data["assignmentgroups"] = jsonArray
         }
 
         if showIVQueue && perms.contains(.admin), let instance = instance {
