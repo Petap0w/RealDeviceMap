@@ -18,9 +18,9 @@ class AssignmentGroup: Hashable {
     }
 
     var name: String
-    var assignmentIDs: [String]
+    var assignmentIDs: [UInt32]
 
-    init(name: String, assignmentIDs: [String]) {
+    init(name: String, assignmentIDs: [UInt32]) {
         self.name = name
         self.assignmentIDs = assignmentIDs
     }
