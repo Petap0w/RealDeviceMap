@@ -1381,7 +1381,7 @@ class ApiRequestHandler {
                     assignmentGroupData["name"] = assignmentGroup.name
 
                     if formatted {
-                        assignmentGroupData["assignements"] = assignements.joined(separator: ", ")
+                        assignmentGroupData["assignments"] = assignments.joined(separator: ", ")
                         let id = assignmentGroup.name.encodeUrl()!
                         assignmentGroupData["buttons"] = "<div class=\"btn-group\" role=\"group\"><a " +
                             "href=\"/dashboard/assignmentgroup/start/\(id)\" " +
@@ -1391,7 +1391,7 @@ class ApiRequestHandler {
                             "<a href=\"/dashboard/assignmentgroup/delete/\(id)\" " +
                             "role=\"button\" class=\"btn btn-danger\">Delete</a></div>"
                     } else {
-                        assignmentGroupData["assignements"] = assignements
+                        assignmentGroupData["assignments"] = assignments
                     }
 
                     jsonArray.append(assignmentGroupData)
