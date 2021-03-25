@@ -1281,7 +1281,7 @@ class ApiRequestHandler {
                     let devicesInGroup = devices?.filter({ deviceGroup.deviceUUIDs.contains($0.uuid) }) ?? []
                     let instances = Array(
                         Set(devicesInGroup.filter({ $0.instanceName != nil }).map({ $0.instanceName! }))
-                    )
+                    ).sorted()
 
                     var deviceGroupData = [String: Any]()
                     deviceGroupData["name"] = deviceGroup.name
