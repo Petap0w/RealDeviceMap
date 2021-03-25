@@ -1376,12 +1376,16 @@ class ApiRequestHandler {
             if assignmentGroups != nil {
                 for assignmentGroup in assignmentGroups! {
                     let assignmentsInGroup = assignments?.filter({ assignmentGroup.assignmentIDs.contains($0.id!) }) ?? []
+                    let assignmentsInGroupDevices = Array(
+                        Set(assignmentsInGroup.filter({ $0.deviceUUID != nil }).map({ $0.deviceUUID! }))
+                    )
 
                     var assignmentGroupData = [String: Any]()
                     assignmentGroupData["name"] = assignmentGroup.name
 
                     if formatted {
-                        assignmentGroupData["assignments"] = assignments?.joined(separator: ", ")
+                        // assignmentGroupData["assignments"] = assignments?.deviceUUID.joined(separator: ", ")
+                        assignmentGroupData["assignments"] = assignmentsInGroupDevices.joined(separator: ", ")
                         let id = assignmentGroup.name.encodeUrl()!
                         assignmentGroupData["buttons"] = "<div class=\"btn-group\" role=\"group\"><a " +
                             "href=\"/dashboard/assignmentgroup/start/\(id)\" " +
@@ -1391,7 +1395,7 @@ class ApiRequestHandler {
                             "<a href=\"/dashboard/assignmentgroup/delete/\(id)\" " +
                             "role=\"button\" class=\"btn btn-danger\">Delete</a></div>"
                     } else {
-                        assignmentGroupData["assignments"] = assignments?
+                        assignmentGroupData["assignments"] = assignments
                     }
 
                     jsonArray.append(assignmentGroupData)
