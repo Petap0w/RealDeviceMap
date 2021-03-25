@@ -18,9 +18,9 @@ class AssignmentGroup: Hashable {
     }
 
     var name: String
-    var assignmentIDs: [UInt32]
+    var assignmentIDs: [UInt]
 
-    init(name: String, assignmentIDs: [UInt32]) {
+    init(name: String, assignmentIDs: [UInt]) {
         self.name = name
         self.assignmentIDs = assignmentIDs
     }
@@ -162,7 +162,7 @@ class AssignmentGroup: Hashable {
         while let result = results.next() {
             let name = result[0] as! String
 Log.info(message: "[DEBUUUUUUG] result[1] : \(result[1])")
-            let assignmentIDs = (result[1] as? String)?.jsonDecodeForceTry() as! [UInt32] ?? []
+            let assignmentIDs = (result[1] as? String)?.jsonDecodeForceTry() as? [UInt] ?? []
 Log.info(message: "[DEBUUUUUUG] assignmentIDs: \(assignmentIDs)")
             assignmentGroups.append(AssignmentGroup(name: name, assignmentIDs: assignmentIDs))
         }
@@ -200,7 +200,7 @@ Log.info(message: "[DEBUUUUUUG] assignmentIDs: \(assignmentIDs)")
 
         let result = results.next()!
         let name = result[0] as! String
-        let assignmentIDs = (result[1] as? String)?.jsonDecodeForceTry() as? [UInt32] ?? []
+        let assignmentIDs = (result[1] as? String)?.jsonDecodeForceTry() as? [UInt] ?? []
 
         return AssignmentGroup(name: name, assignmentIDs: assignmentIDs)
 
