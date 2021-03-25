@@ -1375,7 +1375,7 @@ class ApiRequestHandler {
 
             if assignmentGroups != nil {
                 for assignmentGroup in assignmentGroups! {
-                    let assignmentsInGroup = assignments?.filter({ assignmentGroup.assignmentIDs.contains($0.id) }) ?? []
+                    let assignmentsInGroup = assignments?.filter({ assignmentGroup.assignmentIDs.contains($0.id!) }) ?? []
 
                     var assignmentGroupData = [String: Any]()
                     assignmentGroupData["name"] = assignmentGroup.name
