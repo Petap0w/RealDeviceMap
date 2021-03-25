@@ -48,6 +48,7 @@ class WebServer {
         case dashboardAssignmentStart = "dashboard_assignment_start.mustache"
         case dashboardAssignmentDelete = "dashboard_assignment_delete.mustache"
         case dashboardAssignmentsDeleteAll = "dashboard_assignments_delete_all.mustache"
+        case dashboardAssignmentGroups = "dashboard_assignmentgroups.mustache"
         case dashboardUsers = "dashboard_users.mustache"
         case dashboardUserEdit = "dashboard_user_edit.mustache"
         case dashboardGroups = "dashboard_groups.mustache"

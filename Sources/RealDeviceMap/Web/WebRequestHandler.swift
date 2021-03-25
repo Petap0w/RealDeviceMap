@@ -916,6 +916,10 @@ class WebRequestHandler {
             response.redirect(path: "/dashboard/assignments")
             sessionDriver.save(session: request.session!)
             response.completed(status: .seeOther)
+        case .dashboardAssignmentGroups:
+            data["locale"] = "en"
+            data["page_is_dashboard"] = true
+            data["page"] = "Dashboard - Assignment Groups"
         case .dashboardAccounts:
             data["locale"] = "en"
             data["page_is_dashboard"] = true
