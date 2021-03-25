@@ -162,7 +162,7 @@ class AssignmentGroup: Hashable {
         while let result = results.next() {
             let name = result[0] as! String
 Log.info(message: "[DEBUUUUUUG] result[1] : \(result[1])")
-            let assignmentIDs = result[1] as? [UInt32] ?? []
+            let assignmentIDs = result[1] as? [UInt] ?? []
 Log.info(message: "[DEBUUUUUUG] assignmentIDs: \(assignmentIDs)")
             assignmentGroups.append(AssignmentGroup(name: name, assignmentIDs: assignmentIDs))
         }
