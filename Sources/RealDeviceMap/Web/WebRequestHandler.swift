@@ -3005,6 +3005,7 @@ class WebRequestHandler {
 
         var assignmentsData = [[String: Any]]()
         for assignment in assignments {
+Log.info(message: "[DEBUG] assignment \(assignment)")
             assignmentsData.append(["id": assignment.id, "selected": false])
         }
         data["assignments"] = assignmentsData
@@ -3022,6 +3023,7 @@ class WebRequestHandler {
             return data
         }
         let assignmentIDs = request.params(named: "assignments")
+Log.info(message: "[DEBUG] assignmentIDs \(assignmentIDs)")
 
         let assignmentGroup = AssignmentGroup(name: groupName, assignmentIDs: assignmentIDs)
         do {
