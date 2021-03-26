@@ -3115,7 +3115,9 @@ class WebRequestHandler {
                 "instanceName": assignment.instanceName as Any, "selected": false])
         }
 
-        data["assignments"] = assignmentsData.sorted { ($0["deviceUUID"] as String) < ($1["deviceUUID"] as String) }
+        data["assignments"] = assignmentsData
+            // swiftlint:disable:next force_cast
+            .sorted { ($0["deviceUUID"] as! String) < ($1["deviceUUID"] as! String) }
 
         return data
     }
@@ -3191,7 +3193,9 @@ class WebRequestHandler {
                     "selected": oldAssignmentGroup!.assignmentIDs.contains(assignment.id!)])
             }
 
-            data["assignments"] = assignmentsData.sorted { ($0["deviceUUID"] as String) < ($1["deviceUUID"] as String) }
+            data["assignments"] = assignmentsData
+                // swiftlint:disable:next force_cast
+                .sorted { ($0["deviceUUID"] as! String) < ($1["deviceUUID"] as! String) }
 
             return data
         }
