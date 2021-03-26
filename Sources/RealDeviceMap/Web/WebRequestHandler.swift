@@ -1016,10 +1016,8 @@ class WebRequestHandler {
                     response.completed(status: .notFound)
                     return
                 }
-Log.info(message: "[DEBUG] assignmentGroup : \(assignmentGroup)")
                 
                 let assignments: [Assignment]
-
                 do {
                     assignments = try Assignment.getAll()
                 } catch {
@@ -1031,6 +1029,66 @@ Log.info(message: "[DEBUG] assignmentGroup : \(assignmentGroup)")
 
                 let assignmentsInGroup = assignments.filter({ assignmentGroup.assignmentIDs.contains($0.id!) } )
                 for assignment in assignmentsInGroup {
+                  do {
+                    try AssignmentController.global.triggerAssignment(assignment: assignment, force: true)
+                  } catch {
+                    response.setBody(string: "Failed to trigger assignment")
+                    sessionDriver.save(session: request.session!)
+                    response.completed(status: .internalServerError)
+                    return
+                  }
+                }
+
+                response.redirect(path: "/dashboard/assignmentgroups")
+                sessionDriver.save(session: request.session!)
+                response.completed(status: .seeOther)
+            } else {
+                response.setBody(string: "Bad Request")
+                sessionDriver.save(session: request.session!)
+                response.completed(status: .badRequest)
+            }
+        case .dashboardAssignmentGroupReQuest:
+            data["locale"] = "en"
+            let nameT = request.urlVariables["name"]
+            if let name = nameT {
+                let assignmentGroupT: AssignmentGroup?
+                do {
+                    assignmentGroupT = try AssignmentGroup.getByName(name: name)
+                } catch {
+                    response.setBody(string: "Internal Server Error")
+                    sessionDriver.save(session: request.session!)
+                    response.completed(status: .internalServerError)
+                    return
+                }
+                guard let assignmentGroup = assignmentGroupT else {
+                    response.setBody(string: "Assignment Group Not Found")
+                    sessionDriver.save(session: request.session!)
+                    response.completed(status: .notFound)
+                    return
+                }
+                
+                let assignments: [Assignment]
+                let instances: [Instance]
+                do {
+                    assignments = try Assignment.getAll()
+                    instances = try Instance.getAll()
+                } catch {
+                    response.setBody(string: "Internal Server Error")
+                    sessionDriver.save(session: request.session!)
+                    response.completed(status: .internalServerError)
+                    return
+                }
+
+                let assignmentsInGroup = assignments.filter({ assignmentGroup.assignmentIDs.contains($0.id!) } )
+                for assignment in assignmentsInGroup {
+                    let currentID = assignment.id
+                    let instanceName = assignment.instanceName
+                    let instanceType = instances.description
+                    
+                    Log.info(message: "[DEBUG] quest assignment currentID :\(currentID)")
+                    Log.info(message: "[DEBUG] quest assignment instanceName :\(currentinstanceNameID)")
+                    Log.info(message: "[DEBUG] quest assignment instanceType :\(instanceType)")
+
                   do {
                     try AssignmentController.global.triggerAssignment(assignment: assignment, force: true)
                   } catch {

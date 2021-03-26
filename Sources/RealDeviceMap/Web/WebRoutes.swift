@@ -209,6 +209,10 @@ class WebRoutes {
                 WebRequestHandler.handle(request: request, response: response, page: .dashboardAssignmentGroupStart,
                                          requiredPerms: [.admin])
             }),
+            Route(methods: [.get, .post], uri: "/dashboard/assignmentgroup/request/{name}", handler: { (request, response) in
+                WebRequestHandler.handle(request: request, response: response, page: .dashboardAssignmentGroupReQuest,
+                                         requiredPerms: [.admin])
+            }),
             Route(method: .get, uri: "/dashboard/users", handler: { (request, response) in
                 WebRequestHandler.handle(request: request, response: response, page: .dashboardUsers,
                                          requiredPerms: [.admin])
