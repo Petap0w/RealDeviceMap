@@ -1378,8 +1378,8 @@ class ApiRequestHandler {
                     let assignmentsInGroup =
                         assignments?.filter({ assignmentGroup.assignmentIDs.contains($0.id!) }) ?? []
                     let assignmentsInGroupDevices = Array(
-                        Set(assignmentsInGroup.filter({ $0.deviceUUID != nil })
-                            .map({ $0.deviceUUID! + " -> " + $0.instanceName}))
+                        Set(assignmentsInGroup.filter({ $0.deviceUUID != nil || $0.deviceGroupName != nil })
+                            .map({ $0.deviceUUID! + $0.deviceGroupName! + " -> " + $0.instanceName}))
                     ).sorted()
 
                     var assignmentGroupData = [String: Any]()
