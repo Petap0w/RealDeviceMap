@@ -1395,7 +1395,10 @@ class ApiRequestHandler {
                             "<a href=\"/dashboard/assignmentgroup/edit/\(id)\" " +
                             "role=\"button\" class=\"btn btn-primary\">Edit</a>" +
                             "<a href=\"/dashboard/assignmentgroup/delete/\(id)\" " +
-                            "role=\"button\" class=\"btn btn-danger\">Delete</a></div>"
+                            "role=\"button\" class=\"btn btn-danger\" onclick=\"return " +
+                            "confirm('Are you sure you want to delete this assignment " +
+                            "group? This action is irreversible and cannot be " +
+                            "undone without backups.')\">Delete</a></div>"
                     } else {
                         assignmentGroupData["assignments"] = assignments
                     }
