@@ -1026,10 +1026,10 @@ Log.info(message: "[DEBUG] assignmentGroup : \(assignmentGroup)")
                     response.setBody(string: "Internal Server Error")
                     sessionDriver.save(session: request.session!)
                     response.completed(status: .internalServerError)
-                    throw CompletedEarly()
+                    return
                 }
 
-                let assignmentsInGroup = assignments.filter({ assignmentGroup.assignmentIDs.contains($0.id!) } ) ?? []
+                let assignmentsInGroup = assignments.filter({ assignmentGroup.assignmentIDs.contains($0.id!) } )
                 for assignment in assignmentsInGroup {
                   do {
                     try AssignmentController.global.triggerAssignment(assignment: assignment, force: true)
