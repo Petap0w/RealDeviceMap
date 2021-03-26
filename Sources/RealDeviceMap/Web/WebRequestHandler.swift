@@ -1083,7 +1083,6 @@ class WebRequestHandler {
                         let instance = try Instance.getByName(name: assignment.instanceName)!
                         if instance.type == .autoQuest {
                             try Pokestop.clearQuests(instance: instance)
-                            Log.info(message: "[DEBUG] reset quests for \(instance.name)")
                         }
                         try AssignmentController.global.triggerAssignment(assignment: assignment, force: true)
                     } catch {
