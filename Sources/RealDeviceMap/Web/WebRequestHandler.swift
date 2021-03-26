@@ -2995,7 +2995,7 @@ class WebRequestHandler {
         let assignments: [Assignment]
 
         do {
-            assignments = try Assignment.getAll(getData: false)
+            assignments = try Assignment.getAll()
         } catch {
             response.setBody(string: "Internal Server Errror")
             sessionDriver.save(session: request.session!)
@@ -3005,7 +3005,7 @@ class WebRequestHandler {
 
         var assignmentsData = [[String: Any]]()
         for assignment in assignments {
-            assignmentsData.append(["name": assignment.name, "selected": false])
+            assignmentsData.append(["id": assignment.id, "selected": false])
         }
         data["assignments"] = assignmentsData
 
