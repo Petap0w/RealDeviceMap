@@ -3078,7 +3078,7 @@ class WebRequestHandler {
 
             var assignmentsData = [[String: Any]]()
             for assignment in assignments {
-                assignmentsData.append(["id": assignment.id ?? "" as Any, "deviceUUID": assignment.deviceUUID ?? "" as Any, "deviceGroupName": assignment.deviceGroupName ?? "" as Any, "instanceName": assignment.instanceName as Any, "selected": oldAssignmentGroup!.assignmentIDs.contains(assignment.id)])
+                assignmentsData.append(["id": assignment.id ?? "" as Any, "deviceUUID": assignment.deviceUUID ?? "" as Any, "deviceGroupName": assignment.deviceGroupName ?? "" as Any, "instanceName": assignment.instanceName as Any, "selected": oldAssignmentGroup!.assignmentIDs.contains(assignment.id!)])
             }
 
             data["assignments"] = assignmentsData.sorted { ($0["deviceUUID"] as! String) < ($1["deviceUUID"] as! String) }
