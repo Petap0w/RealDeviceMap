@@ -3021,10 +3021,12 @@ class WebRequestHandler {
             data["error"] = "Invalid Request."
             return data
         }
-        let assignmentIDs = request.params(named: "assignments").map { UInt32($0)! }
+        let assignmentIDs = request.params(named: "assignments")
+        
 Log.info(message: "[DEBUG] assignmentIDs \(assignmentIDs)")
+Log.info(message: "[DEBUG] name \(groupName)")
 
-        let assignmentGroup = AssignmentGroup(name: groupName, assignmentIDs: assignmentIDs)
+        let assignmentGroup = AssignmentGroup(name: groupName, assignmentIDs: [1])
         do {
             try assignmentGroup.create()
         } catch {
