@@ -1387,7 +1387,6 @@ class ApiRequestHandler {
                     assignmentGroupData["name"] = assignmentGroup.name
 
                     if formatted {
-                        // assignmentGroupData["assignments"] = assignments?.deviceUUID.joined(separator: ", ")
                         assignmentGroupData["assignments"] = assignmentsInGroupDevices.joined(separator: ", ")
                         let id = assignmentGroup.name.encodeUrl()!
                         assignmentGroupData["buttons"] = "<div class=\"btn-group\" role=\"group\"><a " +
