@@ -1391,7 +1391,7 @@ class ApiRequestHandler {
                             "href=\"/dashboard/assignmentgroup/start/\(id)\" " +
                             "role=\"button\" class=\"btn btn-success\">Start</a>" +
                             "<a href=\"/dashboard/assignmentgroup/request/\(id)\" " +
-                            "role=\"button\" class=\"btn btn-primary\">ReQuest</a>" +
+                            "role=\"button\" class=\"btn btn-warning\">ReQuest</a>" +
                             "<a href=\"/dashboard/assignmentgroup/edit/\(id)\" " +
                             "role=\"button\" class=\"btn btn-primary\">Edit</a>" +
                             "<a href=\"/dashboard/assignmentgroup/delete/\(id)\" " +
