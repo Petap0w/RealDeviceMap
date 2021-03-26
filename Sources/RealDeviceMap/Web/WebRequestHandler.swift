@@ -1083,7 +1083,7 @@ class WebRequestHandler {
                 for assignment in assignmentsInGroup {
                     let currentID = assignment.id!
                     let instanceName = assignment.instanceName
-                    let instanceType = instances.filter({ $0.type == "autoQuest" })
+                    let instanceType = instances.filter({ $0.type == autoQuest })
                     
                     Log.info(message: "[DEBUG] quest assignment currentID :\(currentID)")
                     Log.info(message: "[DEBUG] quest assignment instanceName :\(instanceName)")
