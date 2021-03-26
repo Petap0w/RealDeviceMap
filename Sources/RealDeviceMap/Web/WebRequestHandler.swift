@@ -3022,7 +3022,7 @@ class WebRequestHandler {
             return data
         }
         var assignmentIDs = request.params(named: "assignments")
-        assignmentIDs.map { UInt32($0) }
+        assignmentIDs = assignmentIDs.map { UInt32($0) }
 Log.info(message: "[DEBUG] assignmentIDs \(assignmentIDs)")
 
         let assignmentGroup = AssignmentGroup(name: groupName, assignmentIDs: [1])
