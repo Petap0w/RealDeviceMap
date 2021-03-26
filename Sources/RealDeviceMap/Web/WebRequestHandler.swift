@@ -1080,11 +1080,11 @@ class WebRequestHandler {
                 let assignmentsInGroup = assignments.filter({ assignmentGroup.assignmentIDs.contains($0.id!) } )
                 for assignment in assignmentsInGroup {
                     let instance = try Instance.getByName(name: assignment.instanceName)!
-                    if instance.type == .autoQuest {
-                        try Pokestop.clearQuests(instance: instance)
-Log.info(message: "[DEBUG] reset quests for \(instance.name)")
-                    }
                     do {
+                        if instance.type == .autoQuest {
+                            try Pokestop.clearQuests(instance: instance)
+                            Log.info(message: "[DEBUG] reset quests for \(instance.name)")
+                        }
                         try AssignmentController.global.triggerAssignment(assignment: assignment, force: true)
                     } catch {
                         response.setBody(string: "Failed to trigger assignment")
