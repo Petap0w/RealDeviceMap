@@ -3090,7 +3090,7 @@ class WebRequestHandler {
     static func editAssignmentGroupPost(data: MustacheEvaluationContext.MapType,
                                     request: HTTPRequest,
                                     response: HTTPResponse,
-                                    assignmentGroupName: String? = nil) throws -> MustacheEvaluationContext.MapType {
+                                    deviceGroupName: String? = nil) throws -> MustacheEvaluationContext.MapType {
 
         var data = data
         guard
