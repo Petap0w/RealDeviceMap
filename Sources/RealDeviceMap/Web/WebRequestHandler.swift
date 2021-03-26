@@ -1086,7 +1086,7 @@ class WebRequestHandler {
                     let instanceType = instances.description
                     
                     Log.info(message: "[DEBUG] quest assignment currentID :\(currentID)")
-                    Log.info(message: "[DEBUG] quest assignment instanceName :\(currentinstanceNameID)")
+                    Log.info(message: "[DEBUG] quest assignment instanceName :\(instanceName)")
                     Log.info(message: "[DEBUG] quest assignment instanceType :\(instanceType)")
 
                   do {
