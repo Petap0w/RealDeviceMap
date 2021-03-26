@@ -3007,9 +3007,8 @@ class WebRequestHandler {
         for assignment in assignments {
             assignmentsData.append(["id": assignment.id ?? "" as Any, "deviceUUID": assignment.deviceUUID ?? "" as Any, "deviceGroupName": assignment.deviceGroupName ?? "" as Any, "instanceName": assignment.instanceName as Any, "selected": false])
         }
-Log.info(message: "[DEBUG] assignmentsData \(assignmentsData)")
 
-        data["assignments"] = assignmentsData
+        data["assignments"] = assignmentsData.sorted(by: { $0.deviceUUID < $1.deviceUUID })
 
         return data
     }
