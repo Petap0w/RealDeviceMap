@@ -3049,7 +3049,7 @@ class WebRequestHandler {
 
         let oldAssignmentGroup: AssignmentGroup?
         do {
-            oldAssignmentGroup = try oldAssignmentGroup.getByName(name: assignmentGroupName)
+            oldAssignmentGroup = try AssignmentGroup.getByName(name: assignmentGroupName)
         } catch {
             response.setBody(string: "Internal Server Error")
             sessionDriver.save(session: request.session!)
