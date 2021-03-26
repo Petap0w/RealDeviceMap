@@ -1377,11 +1377,12 @@ class ApiRequestHandler {
                 for assignmentGroup in assignmentGroups! {
                     let assignmentsInGroup =
                         assignments?.filter({ assignmentGroup.assignmentIDs.contains($0.id!) }) ?? []
-                    let assignmentsInGroupDevice = assignmentsInGroup.filter({ $0.deviceUUID != nil })
-                    let assignmentsInGroupDeviceGroup = assignmentsInGroup.filter({ $0.deviceGroupName != nil})
-                    let assignmentsInGroupToShow = assignmentsInGroupDevice + assignmentsInGroupDeviceGroup
+//                    let assignmentsInGroupDevice = assignmentsInGroup.filter({ $0.deviceUUID != nil || $0.deviceGroupName != nil })
+//                    let assignmentsInGroupDeviceGroup = assignmentsInGroup.filter({ $0.deviceGroupName != nil})
+//                    let assignmentsInGroupToShow = assignmentsInGroupDevice + assignmentsInGroupDeviceGroup
                     let assignmentsInGroupDevices = Array(
-                        Set(assignmentsInGroupToShow.map({ ($0.deviceUUID != nil ? $0.deviceUUID! : "") +
+                        Set(assignmentsInGroup.filter({ $0.deviceUUID != nil || $0.deviceGroupName != nil })
+                            .map({ ($0.deviceUUID != nil ? $0.deviceUUID! : "") +
                             ($0.deviceGroupName != nil ? $0.deviceGroupName! : "") + " -> " + $0.instanceName}))
                     ).sorted()
 
