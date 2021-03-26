@@ -2992,12 +2992,10 @@ class WebRequestHandler {
                                   response: HTTPResponse) throws -> MustacheEvaluationContext.MapType {
 
         var data = data
-        let instances: [Instance]
-        let devices: [Device]
+        let assignments: [Assignment]
 
         do {
-            instances = try Instance.getAll(getData: false)
-            devices = try Device.getAll()
+            assignments = try Assignment.getAll(getData: false)
         } catch {
             response.setBody(string: "Internal Server Errror")
             sessionDriver.save(session: request.session!)
@@ -3005,17 +3003,11 @@ class WebRequestHandler {
             throw CompletedEarly()
         }
 
-        var instancesData = [[String: Any]]()
-        for instance in instances {
-            instancesData.append(["name": instance.name, "selected": false])
+        var assignmentsData = [[String: Any]]()
+        for assignment in assignments {
+            assignmentsData.append(["name": assignment.name, "selected": false])
         }
-        data["instances"] = instancesData
-
-        var devicesData = [[String: Any]]()
-        for device in devices {
-            devicesData.append(["name": device.uuid, "selected": false])
-        }
-        data["devices"] = devicesData
+        data["assignments"] = assignmentsData
 
         return data
     }
@@ -3029,18 +3021,18 @@ class WebRequestHandler {
             data["error"] = "Invalid Request."
             return data
         }
-        let deviceUUIDs = request.params(named: "devices")
+        let assignmentIDs = request.params(named: "assignments")
 
-        let deviceGroup = DeviceGroup(name: groupName, deviceUUIDs: deviceUUIDs)
+        let assignmentGroup = AssignmentGroup(name: groupName, assignmentIDs: assignmentIDs)
         do {
-            try deviceGroup.create()
+            try assignmentGroup.create()
         } catch {
             data["show_error"] = true
-            data["error"] = "Failed to create device group. Does this device group already exist?"
+            data["error"] = "Failed to create assignment group. Does this assignment group already exist?"
             return data
         }
 
-        response.redirect(path: "/dashboard/devicegroups")
+        response.redirect(path: "/dashboard/assignmentgroups")
         sessionDriver.save(session: request.session!)
         response.completed(status: .seeOther)
         throw CompletedEarly()
