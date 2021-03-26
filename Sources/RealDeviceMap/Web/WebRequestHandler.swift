@@ -999,7 +999,7 @@ class WebRequestHandler {
             }
         case .dashboardAssignmentGroupStart:
             data["locale"] = "en"
-            let nameT = request.urlVariables["name"] ?? ""
+            let nameT = request.urlVariables["name"]
             if let name = nameT {
                 let assignmentGroupT: AssignmentGroup?
                 do {
