@@ -1381,7 +1381,7 @@ class ApiRequestHandler {
                         Set(assignmentsInGroup.filter({ $0.deviceUUID != nil && $0.deviceGroupName == nil})
                             .filter({ $0.deviceUUID == nil && $0.deviceGroupName != nil})
                             .map({ $0.deviceUUID! + $0.deviceGroupName + " -> " + $0.instanceName}))
-                    ).sorted()
+                    )
 
                     var assignmentGroupData = [String: Any]()
                     assignmentGroupData["name"] = assignmentGroup.name
