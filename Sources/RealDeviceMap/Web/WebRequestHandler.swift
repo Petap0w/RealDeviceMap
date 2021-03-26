@@ -3021,8 +3021,7 @@ class WebRequestHandler {
             data["error"] = "Invalid Request."
             return data
         }
-        var assignmentIDs = request.params(named: "assignments")
-        assignmentIDs = assignmentIDs.map { UInt32($0) }
+        let assignmentIDs = (request.params(named: "assignments")).map { UInt32($0!) }
 Log.info(message: "[DEBUG] assignmentIDs \(assignmentIDs)")
 
         let assignmentGroup = AssignmentGroup(name: groupName, assignmentIDs: [1])
