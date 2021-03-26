@@ -3090,7 +3090,7 @@ class WebRequestHandler {
     static func editAssignmentGroupPost(data: MustacheEvaluationContext.MapType,
                                     request: HTTPRequest,
                                     response: HTTPResponse,
-                                    deviceGroupName: String? = nil) throws -> MustacheEvaluationContext.MapType {
+                                    assignmentGroupName: String? = nil) throws -> MustacheEvaluationContext.MapType {
 
         var data = data
         guard
@@ -3101,51 +3101,51 @@ class WebRequestHandler {
                 return data
         }
 
-        let deviceUUIDs = request.params(named: "devices")
+        let assignmentIDs = request.params(named: "assignments").map { UInt32($0)! }
 
         data["name"] = name
-        if deviceGroupName != nil {
-            let oldDeviceGroup: DeviceGroup?
+        if assignmentGroupName != nil {
+            let oldAssignmentGroup: AssignmentGroup?
             do {
-                oldDeviceGroup = try DeviceGroup.getByName(name: deviceGroupName!)
+                assignmentGroupName = try AssignmentGroup.getByName(name: assignmentGroupName!)
             } catch {
                 data["show_error"] = true
-                data["error"] = "Failed to update device group. Is the name unique?"
+                data["error"] = "Failed to update assignment group. Is the name unique?"
                 return data
             }
-            if oldDeviceGroup == nil {
-                response.setBody(string: "Device Group Not Found")
+            if oldAssignmentGroup == nil {
+                response.setBody(string: "Assignment Group Not Found")
                 sessionDriver.save(session: request.session!)
                 response.completed(status: .notFound)
                 throw CompletedEarly()
             } else {
-                oldDeviceGroup!.name = name
-                oldDeviceGroup!.deviceUUIDs = deviceUUIDs
+                oldAssignmentGroup!.name = name
+                oldAssignmentGroup!.assignmentIDs = assignmentIDs
 
                 do {
-                    try oldDeviceGroup!.update(oldName: deviceGroupName!)
+                    try oldAssignmentGroup!.update(oldName: assignmentGroupName!)
                 } catch {
                     data["show_error"] = true
-                    data["error"] = "Failed to update device group. Is the name unique?"
+                    data["error"] = "Failed to update assignment group. Is the name unique?"
                     return data
                 }
-                response.redirect(path: "/dashboard/devicegroups")
+                response.redirect(path: "/dashboard/assignmentgroups")
                 sessionDriver.save(session: request.session!)
                 response.completed(status: .seeOther)
                 throw CompletedEarly()
             }
         } else {
-            let deviceGroup = DeviceGroup(name: name, deviceUUIDs: deviceUUIDs)
+            let assignmentGroup = AssignmentGroup(name: name, assignmentIDs: assignmentIDs)
             do {
-                try deviceGroup.create()
+                try assignmentGroup.create()
             } catch {
                 data["show_error"] = true
-                data["error"] = "Failed to create device group. Is the name unique?"
+                data["error"] = "Failed to create assignment group. Is the name unique?"
                 return data
             }
         }
 
-        response.redirect(path: "/dashboard/devicegroups")
+        response.redirect(path: "/dashboard/assignmentgroups")
         sessionDriver.save(session: request.session!)
         response.completed(status: .seeOther)
         throw CompletedEarly()
