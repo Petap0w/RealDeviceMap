@@ -3107,7 +3107,7 @@ class WebRequestHandler {
         if assignmentGroupName != nil {
             let oldAssignmentGroup: AssignmentGroup?
             do {
-                assignmentGroupName = try AssignmentGroup.getByName(name: assignmentGroupName!)
+                oldAssignmentGroupName = try AssignmentGroup.getByName(name: assignmentGroupName!)
             } catch {
                 data["show_error"] = true
                 data["error"] = "Failed to update assignment group. Is the name unique?"
