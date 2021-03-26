@@ -1081,13 +1081,13 @@ class WebRequestHandler {
 
                 let assignmentsInGroup = assignments.filter({ assignmentGroup.assignmentIDs.contains($0.id!) } )
                 for assignment in assignmentsInGroup {
-                    let currentID = assignment.id
+                    let currentID = assignment.id!
                     let instanceName = assignment.instanceName
-                    let instanceType = instances.description
+                    let instanceType = instances.filter({ $0.type == "autoQuest" })
                     
                     Log.info(message: "[DEBUG] quest assignment currentID :\(currentID)")
                     Log.info(message: "[DEBUG] quest assignment instanceName :\(instanceName)")
-                    Log.info(message: "[DEBUG] quest assignment instanceType :\(instanceType)")
+                    Log.info(message: "[DEBUG] quest assignment instanceType :\(instanceType.description)")
 
                   do {
                     try AssignmentController.global.triggerAssignment(assignment: assignment, force: true)
