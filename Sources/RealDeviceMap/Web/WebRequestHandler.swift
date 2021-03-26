@@ -997,6 +997,44 @@ class WebRequestHandler {
                 sessionDriver.save(session: request.session!)
                 response.completed(status: .badRequest)
             }
+        case .dashboardAssignmentGroupStart:
+            data["locale"] = "en"
+            let name = request.urlVariables["name"] ?? ""
+            if name {
+                let assignmentGroupT: AssignmentGroup?
+                do {
+                    assignmentGroupT = try AssignmentGroup.getByName(name: name)
+                } catch {
+                    response.setBody(string: "Internal Server Error")
+                    sessionDriver.save(session: request.session!)
+                    response.completed(status: .internalServerError)
+                    return
+                }
+                guard let assignmentGroup = assignmentGroupT else {
+                    response.setBody(string: "Assignment Group Not Found")
+                    sessionDriver.save(session: request.session!)
+                    response.completed(status: .notFound)
+                    return
+                }
+Log.info(message: "[DEBUG] assignmentGroup : \(assignmentGroup)")
+  /*
+                do {
+                    try AssignmentController.global.triggerAssignment(assignment: assignment, force: true)
+                } catch {
+                    response.setBody(string: "Failed to trigger assignment")
+                    sessionDriver.save(session: request.session!)
+                    response.completed(status: .internalServerError)
+                    return
+                }
+*/
+                response.redirect(path: "/dashboard/assignmentgroups")
+                sessionDriver.save(session: request.session!)
+                response.completed(status: .seeOther)
+            } else {
+                response.setBody(string: "Bad Request")
+                sessionDriver.save(session: request.session!)
+                response.completed(status: .badRequest)
+            }
         case .dashboardAccounts:
             data["locale"] = "en"
             data["page_is_dashboard"] = true
