@@ -3005,7 +3005,7 @@ class WebRequestHandler {
 
         var assignmentsData = [[String: Any]]()
         for assignment in assignments {
-            assignmentsData.append(["id": assignment.id as Any, "deviceUUID": assignment.deviceUUID ?? "" as Any, "deviceGroupName": assignment.deviceGroupName ?? "" as Any, "instanceName": assignment.instanceName as Any, "selected": false])
+            assignmentsData.append(["id": assignment.id ?? "" as Any, "deviceUUID": assignment.deviceUUID ?? "" as Any, "deviceGroupName": assignment.deviceGroupName ?? "" as Any, "instanceName": assignment.instanceName as Any, "selected": false])
         }
         data["assignments"] = assignmentsData
 
@@ -3021,12 +3021,12 @@ class WebRequestHandler {
             data["error"] = "Invalid Request."
             return data
         }
-        let assignmentIDs = request.params(named: "assignments")
+        let assignmentIDs = request.params(named: "assignments").map { UInt32($0) }
         
 Log.info(message: "[DEBUG] assignmentIDs \(assignmentIDs)")
 Log.info(message: "[DEBUG] name \(groupName)")
 
-        let assignmentGroup = AssignmentGroup(name: groupName, assignmentIDs: [1])
+        let assignmentGroup = AssignmentGroup(name: groupName, assignmentIDs: assignmentIDs)
         do {
             try assignmentGroup.create()
         } catch {
