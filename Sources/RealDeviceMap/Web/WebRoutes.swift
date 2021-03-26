@@ -193,6 +193,18 @@ class WebRoutes {
                 WebRequestHandler.handle(request: request, response: response, page: .dashboardAssignmentGroups,
                                          requiredPerms: [.admin])
             }),
+            Route(methods: [.get, .post], uri: "/dashboard/assignmentgroup/add", handler: { (request, response) in
+                WebRequestHandler.handle(request: request, response: response, page: .dashboardAssignmentGroupAdd,
+                                         requiredPerms: [.admin])
+            }),
+            Route(methods: [.get, .post], uri: "/dashboard/assignmentgroup/edit/{name}", handler: { (request, response) in
+                WebRequestHandler.handle(request: request, response: response, page: .dashboardAssignmentGroupEdit,
+                                         requiredPerms: [.admin])
+            }),
+            Route(methods: [.get, .post], uri: "/dashboard/assignmentgroup/delete/{name}", handler: { (request, response) in
+                WebRequestHandler.handle(request: request, response: response, page: .dashboardAssignmentGroupDelete,
+                                         requiredPerms: [.admin])
+            }),
             Route(method: .get, uri: "/dashboard/users", handler: { (request, response) in
                 WebRequestHandler.handle(request: request, response: response, page: .dashboardUsers,
                                          requiredPerms: [.admin])

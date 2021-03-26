@@ -920,6 +920,83 @@ class WebRequestHandler {
             data["locale"] = "en"
             data["page_is_dashboard"] = true
             data["page"] = "Dashboard - Assignment Groups"
+        case .dashboardAssignmentGroupAdd:
+            data["locale"] = "en"
+            data["page_is_dashboard"] = true
+            data["page"] = "Dashboard - Add Assignment Group"
+            if request.method == .post {
+                do {
+                    data = try addAssignmentGroupPost(data: data, request: request, response: response)
+                } catch {
+                    return
+                }
+            } else {
+                do {
+                    data["nothing_selected"] = true
+                    data = try addAssignmentGroupGet(data: data, request: request, response: response)
+                } catch {
+                    return
+                }
+            }
+        case .dashboardAssignmentGroupEdit:         // toDO
+            data["locale"] = "en"
+            let deviceGroupName = (request.urlVariables["name"] ?? "").decodeUrl()!
+            data["page_is_dashboard"] = true
+            data["page"] = "Dashboard - Edit Device Group"
+            data["old_name"] = deviceGroupName
+
+            if request.param(name: "delete") == "true" {
+                do {
+                    try DeviceGroup.delete(name: deviceGroupName)
+                    response.redirect(path: "/dashboard/devicegroups")
+                    sessionDriver.save(session: request.session!)
+                    response.completed(status: .seeOther)
+                    return
+                } catch {
+                    response.setBody(string: "Internal Server Error")
+                    sessionDriver.save(session: request.session!)
+                    response.completed(status: .internalServerError)
+                    return
+                }
+
+            } else if request.method == .post {
+                do {
+                    data = try editDeviceGroupPost(data: data, request: request, response: response,
+                                                   deviceGroupName: deviceGroupName)
+                } catch {
+                    return
+                }
+            } else {
+                do {
+                    data = try editDeviceGroupGet(data: data, request: request, response: response,
+                                                  deviceGroupName: deviceGroupName)
+                } catch {
+                    return
+                }
+            }
+        case .dashboardAssignmentGroupDelete:
+            data["locale"] = "en"
+            data["page_is_dashboard"] = true
+            data["page"] = "Dashboard - Delete Assignment Group"
+
+            let nameT = request.urlVariables["name"]
+            if let name = nameT {
+                do {
+                    try AssignmentGroup.delete(name: name)
+                } catch {
+                    response.setBody(string: "Internal Server Error")
+                    sessionDriver.save(session: request.session!)
+                    response.completed(status: .internalServerError)
+                    return
+                }
+                response.redirect(path: "/dashboard/assignmentgroups")
+                sessionDriver.save(session: request.session!)
+                response.completed(status: .seeOther)
+            } else {
+                response.setBody(string: "Bad Request")
+                sessionDriver.save(session: request.session!)
+                response.completed(status: .badRequest)
+            }
         case .dashboardAccounts:
             data["locale"] = "en"
             data["page_is_dashboard"] = true

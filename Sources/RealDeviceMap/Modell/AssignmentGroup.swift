@@ -1,5 +1,5 @@
 //
-//  DeviceGroup.swift
+//  AssignmentGroup.swift
 //  RealDeviceMap
 //
 //  Created by petap0w on 3/25/21.
