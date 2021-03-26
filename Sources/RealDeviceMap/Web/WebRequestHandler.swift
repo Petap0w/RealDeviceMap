@@ -2988,6 +2988,65 @@ class WebRequestHandler {
         throw CompletedEarly()
     }
 
+    static func addAssignmentGroupGet(data: MustacheEvaluationContext.MapType, request: HTTPRequest,
+                                  response: HTTPResponse) throws -> MustacheEvaluationContext.MapType {
+
+        var data = data
+        let instances: [Instance]
+        let devices: [Device]
+
+        do {
+            instances = try Instance.getAll(getData: false)
+            devices = try Device.getAll()
+        } catch {
+            response.setBody(string: "Internal Server Errror")
+            sessionDriver.save(session: request.session!)
+            response.completed(status: .internalServerError)
+            throw CompletedEarly()
+        }
+
+        var instancesData = [[String: Any]]()
+        for instance in instances {
+            instancesData.append(["name": instance.name, "selected": false])
+        }
+        data["instances"] = instancesData
+
+        var devicesData = [[String: Any]]()
+        for device in devices {
+            devicesData.append(["name": device.uuid, "selected": false])
+        }
+        data["devices"] = devicesData
+
+        return data
+    }
+
+    static func addAssignmentGroupPost(data: MustacheEvaluationContext.MapType, request: HTTPRequest,
+                                   response: HTTPResponse) throws -> MustacheEvaluationContext.MapType {
+
+        var data = data
+        guard let groupName = request.param(name: "name") else {
+            data["show_error"] = true
+            data["error"] = "Invalid Request."
+            return data
+        }
+        let deviceUUIDs = request.params(named: "devices")
+
+        let deviceGroup = DeviceGroup(name: groupName, deviceUUIDs: deviceUUIDs)
+        do {
+            try deviceGroup.create()
+        } catch {
+            data["show_error"] = true
+            data["error"] = "Failed to create device group. Does this device group already exist?"
+            return data
+        }
+
+        response.redirect(path: "/dashboard/devicegroups")
+        sessionDriver.save(session: request.session!)
+        response.completed(status: .seeOther)
+        throw CompletedEarly()
+
+    }
+
     static func addAccounts(data: MustacheEvaluationContext.MapType, request: HTTPRequest,
                             response: HTTPResponse) throws -> MustacheEvaluationContext.MapType {
 
