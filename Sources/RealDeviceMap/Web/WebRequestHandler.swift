@@ -3005,8 +3005,8 @@ class WebRequestHandler {
 
         var assignmentsData = [[String: Any]]()
         for assignment in assignments {
-Log.info(message: "[DEBUG] assignment \(assignment)")
-            assignmentsData.append(["id": assignment.id as Any, "selected": false])
+// Log.info(message: "[DEBUG] assignment \(assignment)")
+            assignmentsData.append(["id": assignment.id as Any, "deviceUUID": assignment.deviceUUID, "instanceName": assignment.instanceName, "selected": false])
         }
         data["assignments"] = assignmentsData
 
