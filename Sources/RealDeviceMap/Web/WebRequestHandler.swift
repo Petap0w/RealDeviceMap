@@ -1017,16 +1017,30 @@ class WebRequestHandler {
                     return
                 }
 Log.info(message: "[DEBUG] assignmentGroup : \(assignmentGroup)")
-  /*
+                
+                let assignments: [Assignment]
+
                 do {
-                    try AssignmentController.global.triggerAssignment(assignment: assignment, force: true)
+                    assignments = try Assignment.getAll()
                 } catch {
+                    response.setBody(string: "Internal Server Error")
+                    sessionDriver.save(session: request.session!)
+                    response.completed(status: .internalServerError)
+                    throw CompletedEarly()
+                }
+
+                let assignmentsInGroup = assignments?.filter({ assignmentGroup.assignmentIDs.contains($0.id!) } ) ?? []
+                for assignment in assignmentsInGroup {
+                  do {
+                    try AssignmentController.global.triggerAssignment(assignment: assignment, force: true)
+                  } catch {
                     response.setBody(string: "Failed to trigger assignment")
                     sessionDriver.save(session: request.session!)
                     response.completed(status: .internalServerError)
                     return
+                  }
                 }
-*/
+
                 response.redirect(path: "/dashboard/assignmentgroups")
                 sessionDriver.save(session: request.session!)
                 response.completed(status: .seeOther)
@@ -2429,7 +2443,7 @@ Log.info(message: "[DEBUG] assignmentGroup : \(assignmentGroup)")
             instances = try Instance.getAll(getData: false)
             devices = try Device.getAll()
         } catch {
-            response.setBody(string: "Internal Server Errror")
+            response.setBody(string: "Internal Server Error")
             sessionDriver.save(session: request.session!)
             response.completed(status: .internalServerError)
             throw CompletedEarly()
@@ -2507,7 +2521,7 @@ Log.info(message: "[DEBUG] assignmentGroup : \(assignmentGroup)")
             do {
                 devices = try Device.getAll()
             } catch {
-                response.setBody(string: "Internal Server Errror")
+                response.setBody(string: "Internal Server Error")
                 sessionDriver.save(session: request.session!)
                 response.completed(status: .internalServerError)
                 throw CompletedEarly()
@@ -3035,7 +3049,7 @@ Log.info(message: "[DEBUG] assignmentGroup : \(assignmentGroup)")
         do {
             assignments = try Assignment.getAll()
         } catch {
-            response.setBody(string: "Internal Server Errror")
+            response.setBody(string: "Internal Server Error")
             sessionDriver.save(session: request.session!)
             response.completed(status: .internalServerError)
             throw CompletedEarly()
@@ -3108,7 +3122,7 @@ Log.info(message: "[DEBUG] assignmentGroup : \(assignmentGroup)")
             do {
                 assignments = try Assignment.getAll()
             } catch {
-                response.setBody(string: "Internal Server Errror")
+                response.setBody(string: "Internal Server Error")
                 sessionDriver.save(session: request.session!)
                 response.completed(status: .internalServerError)
                 throw CompletedEarly()
