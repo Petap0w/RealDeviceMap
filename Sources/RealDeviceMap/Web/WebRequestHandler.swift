@@ -3008,7 +3008,7 @@ class WebRequestHandler {
             assignmentsData.append(["id": assignment.id ?? "" as Any, "deviceUUID": assignment.deviceUUID ?? "" as Any, "deviceGroupName": assignment.deviceGroupName ?? "" as Any, "instanceName": assignment.instanceName as Any, "selected": false])
         }
 
-        data["assignments"] = assignmentsData.sorted { $0[1] < $1[1] }
+        data["assignments"] = assignmentsData.sorted { (first, second) -> Bool in return first[1] < second[1] }
 
         return data
     }
