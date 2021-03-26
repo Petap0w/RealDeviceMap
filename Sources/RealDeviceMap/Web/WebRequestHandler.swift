@@ -938,17 +938,17 @@ class WebRequestHandler {
                     return
                 }
             }
-        case .dashboardAssignmentGroupEdit:         // toDO
+        case .dashboardAssignmentGroupEdit:
             data["locale"] = "en"
-            let deviceGroupName = (request.urlVariables["name"] ?? "").decodeUrl()!
+            let assignmentGroupName = (request.urlVariables["name"] ?? "").decodeUrl()!
             data["page_is_dashboard"] = true
-            data["page"] = "Dashboard - Edit Device Group"
-            data["old_name"] = deviceGroupName
+            data["page"] = "Dashboard - Edit Assignment Group"
+            data["old_name"] = assignmentGroupName
 
             if request.param(name: "delete") == "true" {
                 do {
-                    try DeviceGroup.delete(name: deviceGroupName)
-                    response.redirect(path: "/dashboard/devicegroups")
+                    try AssignmentGroup.delete(name: assignmentGroupName)
+                    response.redirect(path: "/dashboard/assignmentgroups")
                     sessionDriver.save(session: request.session!)
                     response.completed(status: .seeOther)
                     return
@@ -961,15 +961,15 @@ class WebRequestHandler {
 
             } else if request.method == .post {
                 do {
-                    data = try editDeviceGroupPost(data: data, request: request, response: response,
-                                                   deviceGroupName: deviceGroupName)
+                    data = try editAssignmentGroupPost(data: data, request: request, response: response,
+                                                   assignmentGroupName: assignmentGroupName)
                 } catch {
                     return
                 }
             } else {
                 do {
-                    data = try editDeviceGroupGet(data: data, request: request, response: response,
-                                                  deviceGroupName: deviceGroupName)
+                    data = try editAssignmentGroupGet(data: data, request: request, response: response,
+                                                  assignmentGroupName: assignmentGroupName)
                 } catch {
                     return
                 }
@@ -3038,6 +3038,117 @@ class WebRequestHandler {
         response.completed(status: .seeOther)
         throw CompletedEarly()
 
+    }
+
+    static func editAssignmentGroupGet(data: MustacheEvaluationContext.MapType,
+                                   request: HTTPRequest,
+                                   response: HTTPResponse,
+                                   assignmentGroupName: String) throws -> MustacheEvaluationContext.MapType {
+
+        var data = data
+
+        let oldAssignmentGroup: AssignmentGroup?
+        do {
+            oldAssignmentGroup = try oldAssignmentGroup.getByName(name: assignmentGroupName)
+        } catch {
+            response.setBody(string: "Internal Server Error")
+            sessionDriver.save(session: request.session!)
+            response.completed(status: .internalServerError)
+            throw CompletedEarly()
+        }
+        if oldAssignmentGroup == nil {
+            response.setBody(string: "Assignment Group Not Found")
+            sessionDriver.save(session: request.session!)
+            response.completed(status: .notFound)
+            throw CompletedEarly()
+        } else {
+            data["old_name"] = oldAssignmentGroup!.name
+            data["name"] = oldAssignmentGroup!.name
+
+            let assignments: [Assignment]
+
+            do {
+                assignments = try Assignment.getAll()
+            } catch {
+                response.setBody(string: "Internal Server Errror")
+                sessionDriver.save(session: request.session!)
+                response.completed(status: .internalServerError)
+                throw CompletedEarly()
+            }
+
+            var assignmentsData = [[String: Any]]()
+            for assignment in assignments {
+                assignmentsData.append(["id": assignment.id ?? "" as Any, "deviceUUID": assignment.deviceUUID ?? "" as Any, "deviceGroupName": assignment.deviceGroupName ?? "" as Any, "instanceName": assignment.instanceName as Any, "selected": oldAssignmentGroup!.assignmentIDs.contains(assignment.id)])
+            }
+
+            data["assignments"] = assignmentsData.sorted { ($0["deviceUUID"] as! String) < ($1["deviceUUID"] as! String) }
+
+            return data
+        }
+    }
+
+    static func editAssignmentGroupPost(data: MustacheEvaluationContext.MapType,
+                                    request: HTTPRequest,
+                                    response: HTTPResponse,
+                                    assignmentGroupName: String? = nil) throws -> MustacheEvaluationContext.MapType {
+
+        var data = data
+        guard
+            let name = request.param(name: "name")
+            else {
+                data["show_error"] = true
+                data["error"] = "Invalid Request."
+                return data
+        }
+
+        let deviceUUIDs = request.params(named: "devices")
+
+        data["name"] = name
+        if deviceGroupName != nil {
+            let oldDeviceGroup: DeviceGroup?
+            do {
+                oldDeviceGroup = try DeviceGroup.getByName(name: deviceGroupName!)
+            } catch {
+                data["show_error"] = true
+                data["error"] = "Failed to update device group. Is the name unique?"
+                return data
+            }
+            if oldDeviceGroup == nil {
+                response.setBody(string: "Device Group Not Found")
+                sessionDriver.save(session: request.session!)
+                response.completed(status: .notFound)
+                throw CompletedEarly()
+            } else {
+                oldDeviceGroup!.name = name
+                oldDeviceGroup!.deviceUUIDs = deviceUUIDs
+
+                do {
+                    try oldDeviceGroup!.update(oldName: deviceGroupName!)
+                } catch {
+                    data["show_error"] = true
+                    data["error"] = "Failed to update device group. Is the name unique?"
+                    return data
+                }
+                response.redirect(path: "/dashboard/devicegroups")
+                sessionDriver.save(session: request.session!)
+                response.completed(status: .seeOther)
+                throw CompletedEarly()
+            }
+        } else {
+            let deviceGroup = DeviceGroup(name: name, deviceUUIDs: deviceUUIDs)
+            do {
+                try deviceGroup.create()
+            } catch {
+                data["show_error"] = true
+                data["error"] = "Failed to create device group. Is the name unique?"
+                return data
+            }
+        }
+
+        response.redirect(path: "/dashboard/devicegroups")
+        sessionDriver.save(session: request.session!)
+        response.completed(status: .seeOther)
+        throw CompletedEarly()
     }
 
     static func addAccounts(data: MustacheEvaluationContext.MapType, request: HTTPRequest,
