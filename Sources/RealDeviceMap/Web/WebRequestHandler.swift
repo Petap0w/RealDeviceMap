@@ -3007,7 +3007,9 @@ class WebRequestHandler {
         for assignment in assignments {
             assignmentsData.append(["id": assignment.id ?? "" as Any, "deviceUUID": assignment.deviceUUID ?? "" as Any, "deviceGroupName": assignment.deviceGroupName ?? "" as Any, "instanceName": assignment.instanceName as Any, "selected": false])
         }
-        data["assignments"] = assignmentsData.sorted ({ $0.deviceUUID < $1.deviceUUID })
+Log.info(message: "[DEBUG] assignmentsData \(assignmentsData)")
+
+        data["assignments"] = assignmentsData
 
         return data
     }
@@ -3022,9 +3024,6 @@ class WebRequestHandler {
             return data
         }
         let assignmentIDs = request.params(named: "assignments").map { UInt32($0)! }
-        
-Log.info(message: "[DEBUG] assignmentIDs \(assignmentIDs)")
-Log.info(message: "[DEBUG] name \(groupName)")
 
         let assignmentGroup = AssignmentGroup(name: groupName, assignmentIDs: assignmentIDs)
         do {
