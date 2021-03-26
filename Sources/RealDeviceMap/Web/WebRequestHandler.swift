@@ -1068,10 +1068,8 @@ class WebRequestHandler {
                 }
                 
                 let assignments: [Assignment]
-                let instances: [Instance]
                 do {
                     assignments = try Assignment.getAll()
-                    instances = try Instance.getAll()
                 } catch {
                     response.setBody(string: "Internal Server Error")
                     sessionDriver.save(session: request.session!)
@@ -1081,22 +1079,19 @@ class WebRequestHandler {
 
                 let assignmentsInGroup = assignments.filter({ assignmentGroup.assignmentIDs.contains($0.id!) } )
                 for assignment in assignmentsInGroup {
-                    let currentID = assignment.id!
-                    let instanceName = assignment.instanceName
-                    let instanceType = instances.filter({ $0.type == autoQuest })
-                    
-                    Log.info(message: "[DEBUG] quest assignment currentID :\(currentID)")
-                    Log.info(message: "[DEBUG] quest assignment instanceName :\(instanceName)")
-                    Log.info(message: "[DEBUG] quest assignment instanceType :\(instanceType.description)")
-
-                  do {
-                    try AssignmentController.global.triggerAssignment(assignment: assignment, force: true)
-                  } catch {
-                    response.setBody(string: "Failed to trigger assignment")
-                    sessionDriver.save(session: request.session!)
-                    response.completed(status: .internalServerError)
-                    return
-                  }
+                    let instance = try Instance.getByName(name: assignment.instanceName)!
+                    if instance.type == .autoQuest {
+                        try Pokestop.clearQuests(instance: instance)
+Log.info(message: "[DEBUG] reset quests for \(instance.name)")
+                    }
+                    do {
+                        try AssignmentController.global.triggerAssignment(assignment: assignment, force: true)
+                    } catch {
+                        response.setBody(string: "Failed to trigger assignment")
+                        sessionDriver.save(session: request.session!)
+                        response.completed(status: .internalServerError)
+                        return
+                    }
                 }
 
                 response.redirect(path: "/dashboard/assignmentgroups")
