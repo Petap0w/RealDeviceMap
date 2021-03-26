@@ -1016,7 +1016,7 @@ class WebRequestHandler {
                     response.completed(status: .notFound)
                     return
                 }
-                
+
                 let assignments: [Assignment]
                 do {
                     assignments = try Assignment.getAll()
@@ -1027,7 +1027,7 @@ class WebRequestHandler {
                     return
                 }
 
-                let assignmentsInGroup = assignments.filter({ assignmentGroup.assignmentIDs.contains($0.id!) } )
+                let assignmentsInGroup = assignments.filter({ assignmentGroup.assignmentIDs.contains($0.id!) })
                 for assignment in assignmentsInGroup {
                   do {
                     try AssignmentController.global.triggerAssignment(assignment: assignment, force: true)
@@ -1066,7 +1066,7 @@ class WebRequestHandler {
                     response.completed(status: .notFound)
                     return
                 }
-                
+
                 let assignments: [Assignment]
                 do {
                     assignments = try Assignment.getAll()
@@ -1077,7 +1077,7 @@ class WebRequestHandler {
                     return
                 }
 
-                let assignmentsInGroup = assignments.filter({ assignmentGroup.assignmentIDs.contains($0.id!) } )
+                let assignmentsInGroup = assignments.filter({ assignmentGroup.assignmentIDs.contains($0.id!) })
                 for assignment in assignmentsInGroup {
                     do {
                         let instance = try Instance.getByName(name: assignment.instanceName)!
@@ -3093,7 +3093,7 @@ class WebRequestHandler {
     }
 
     static func addAssignmentGroupGet(data: MustacheEvaluationContext.MapType, request: HTTPRequest,
-                                  response: HTTPResponse) throws -> MustacheEvaluationContext.MapType {
+                                      response: HTTPResponse) throws -> MustacheEvaluationContext.MapType {
 
         var data = data
         let assignments: [Assignment]
@@ -3109,16 +3109,19 @@ class WebRequestHandler {
 
         var assignmentsData = [[String: Any]]()
         for assignment in assignments {
-            assignmentsData.append(["id": assignment.id ?? "" as Any, "deviceUUID": assignment.deviceUUID ?? "" as Any, "deviceGroupName": assignment.deviceGroupName ?? "" as Any, "instanceName": assignment.instanceName as Any, "selected": false])
+            assignmentsData.append(["id": assignment.id ?? "" as Any,
+                "deviceUUID": assignment.deviceUUID ?? "" as Any,
+                "deviceGroupName": assignment.deviceGroupName ?? "" as Any,
+                "instanceName": assignment.instanceName as Any, "selected": false])
         }
 
-        data["assignments"] = assignmentsData.sorted { ($0["deviceUUID"] as! String) < ($1["deviceUUID"] as! String) }
+        data["assignments"] = assignmentsData.sorted { ($0["deviceUUID"] as String) < ($1["deviceUUID"] as String) }
 
         return data
     }
 
     static func addAssignmentGroupPost(data: MustacheEvaluationContext.MapType, request: HTTPRequest,
-                                   response: HTTPResponse) throws -> MustacheEvaluationContext.MapType {
+                                       response: HTTPResponse) throws -> MustacheEvaluationContext.MapType {
 
         var data = data
         guard let groupName = request.param(name: "name") else {
@@ -3144,10 +3147,9 @@ class WebRequestHandler {
 
     }
 
-    static func editAssignmentGroupGet(data: MustacheEvaluationContext.MapType,
-                                   request: HTTPRequest,
-                                   response: HTTPResponse,
-                                   assignmentGroupName: String) throws -> MustacheEvaluationContext.MapType {
+    static func editAssignmentGroupGet(data: MustacheEvaluationContext.MapType, request: HTTPRequest,
+                                       response: HTTPResponse, assignmentGroupName: String)
+                                        throws -> MustacheEvaluationContext.MapType {
 
         var data = data
 
@@ -3182,19 +3184,22 @@ class WebRequestHandler {
 
             var assignmentsData = [[String: Any]]()
             for assignment in assignments {
-                assignmentsData.append(["id": assignment.id ?? "" as Any, "deviceUUID": assignment.deviceUUID ?? "" as Any, "deviceGroupName": assignment.deviceGroupName ?? "" as Any, "instanceName": assignment.instanceName as Any, "selected": oldAssignmentGroup!.assignmentIDs.contains(assignment.id!)])
+                assignmentsData.append(["id": assignment.id ?? "" as Any,
+                    "deviceUUID": assignment.deviceUUID ?? "" as Any,
+                    "deviceGroupName": assignment.deviceGroupName ?? "" as Any,
+                    "instanceName": assignment.instanceName as Any,
+                    "selected": oldAssignmentGroup!.assignmentIDs.contains(assignment.id!)])
             }
 
-            data["assignments"] = assignmentsData.sorted { ($0["deviceUUID"] as! String) < ($1["deviceUUID"] as! String) }
+            data["assignments"] = assignmentsData.sorted { ($0["deviceUUID"] as String) < ($1["deviceUUID"] as String) }
 
             return data
         }
     }
 
-    static func editAssignmentGroupPost(data: MustacheEvaluationContext.MapType,
-                                    request: HTTPRequest,
-                                    response: HTTPResponse,
-                                    assignmentGroupName: String? = nil) throws -> MustacheEvaluationContext.MapType {
+    static func editAssignmentGroupPost(data: MustacheEvaluationContext.MapType, request: HTTPRequest,
+                                        response: HTTPResponse, assignmentGroupName: String? = nil)
+                                            throws -> MustacheEvaluationContext.MapType {
 
         var data = data
         guard

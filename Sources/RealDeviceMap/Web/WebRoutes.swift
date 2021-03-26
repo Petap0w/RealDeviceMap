@@ -197,19 +197,23 @@ class WebRoutes {
                 WebRequestHandler.handle(request: request, response: response, page: .dashboardAssignmentGroupAdd,
                                          requiredPerms: [.admin])
             }),
-            Route(methods: [.get, .post], uri: "/dashboard/assignmentgroup/edit/{name}", handler: { (request, response) in
+            Route(methods: [.get, .post], uri: "/dashboard/assignmentgroup/edit/{name}",
+                  handler: { (request, response) in
                 WebRequestHandler.handle(request: request, response: response, page: .dashboardAssignmentGroupEdit,
                                          requiredPerms: [.admin])
             }),
-            Route(methods: [.get, .post], uri: "/dashboard/assignmentgroup/delete/{name}", handler: { (request, response) in
+            Route(methods: [.get, .post], uri: "/dashboard/assignmentgroup/delete/{name}",
+                  handler: { (request, response) in
                 WebRequestHandler.handle(request: request, response: response, page: .dashboardAssignmentGroupDelete,
                                          requiredPerms: [.admin])
             }),
-            Route(methods: [.get, .post], uri: "/dashboard/assignmentgroup/start/{name}", handler: { (request, response) in
+            Route(methods: [.get, .post], uri: "/dashboard/assignmentgroup/start/{name}",
+                  handler: { (request, response) in
                 WebRequestHandler.handle(request: request, response: response, page: .dashboardAssignmentGroupStart,
                                          requiredPerms: [.admin])
             }),
-            Route(methods: [.get, .post], uri: "/dashboard/assignmentgroup/request/{name}", handler: { (request, response) in
+            Route(methods: [.get, .post], uri: "/dashboard/assignmentgroup/request/{name}",
+                  handler: { (request, response) in
                 WebRequestHandler.handle(request: request, response: response, page: .dashboardAssignmentGroupReQuest,
                                          requiredPerms: [.admin])
             }),
