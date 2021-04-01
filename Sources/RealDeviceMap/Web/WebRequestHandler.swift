@@ -3110,17 +3110,16 @@ class WebRequestHandler {
         var assignmentsData = [[String: Any]]()
         var uniqueAssignments = Set<String>()
         for assignment in assignments {
-            var devID = assignment.deviceUUID ?? "" as! String
-            var groupID = assignment.deviceGroupName ?? "" as! String
-            var instID = assignment.instanceName ?? "" as! String
-            if !uniqueAssignments.contains(devID + groupID + " -> " + instID) {
-            assignmentsData.append(["id": assignment.id ?? "" as Any,
-                "deviceUUID": assignment.deviceUUID ?? "" as Any,
-                "deviceGroupName": assignment.deviceGroupName ?? "" as Any,
-                "instanceName": assignment.instanceName as Any, "selected": false])
+            let device = assignment.deviceUUID ?? "" as String
+            let group = assignment.deviceGroupName ?? "" as String
+            let instance = assignment.instanceName
+            if !uniqueAssignments.contains(device + group + " -> " + instance) {
+                assignmentsData.append(["id": assignment.id ?? "" as Any,
+                                        "deviceUUID": assignment.deviceUUID ?? "" as Any,
+                                        "deviceGroupName": assignment.deviceGroupName ?? "" as Any,
+                                        "instanceName": assignment.instanceName as Any, "selected": false])
             }
-            uniqueAssignments.insert(devID + groupID + " -> " + instID)
-            Log.info(message: "[DEBUG] : uniqueAssignments : \(uniqueAssignments)")
+            uniqueAssignments.insert(device + group + " -> " + instance)
         }
 
         data["assignments"] = assignmentsData
@@ -3194,11 +3193,18 @@ class WebRequestHandler {
 
             var assignmentsData = [[String: Any]]()
             for assignment in assignments {
-                assignmentsData.append(["id": assignment.id ?? "" as Any,
-                    "deviceUUID": assignment.deviceUUID ?? "" as Any,
-                    "deviceGroupName": assignment.deviceGroupName ?? "" as Any,
-                    "instanceName": assignment.instanceName as Any,
-                    "selected": oldAssignmentGroup!.assignmentIDs.contains(assignment.id!)])
+                let device = assignment.deviceUUID ?? "" as String
+                let group = assignment.deviceGroupName ?? "" as String
+                let instance = assignment.instanceName
+                if !uniqueAssignments.contains(device + group + " -> " + instance) ||
+                    oldAssignmentGroup!.assignmentIDs.contains(assignment.id!) {
+                    assignmentsData.append(["id": assignment.id ?? "" as Any,
+                                            "deviceUUID": assignment.deviceUUID ?? "" as Any,
+                                            "deviceGroupName": assignment.deviceGroupName ?? "" as Any,
+                                            "instanceName": assignment.instanceName as Any,
+                                            "selected": oldAssignmentGroup!.assignmentIDs.contains(assignment.id!)])
+                }
+                uniqueAssignments.insert(device + group + " -> " + instance)
             }
 
             data["assignments"] = assignmentsData
