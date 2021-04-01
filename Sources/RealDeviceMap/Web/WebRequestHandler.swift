@@ -3110,13 +3110,13 @@ class WebRequestHandler {
         var assignmentsData = [[String: Any]]()
         var uniqueAssignments = Set<String>()
         for assignment in assignments {
-            if !uniqueAssignments.contains(assignment.deviceUUID ?? "" as String + assignment.deviceGroupName ?? "" as! String + " -> " + assignment.instanceName as String) {
+            if !uniqueAssignments.contains(assignment.deviceUUID ?? "" as! String + assignment.deviceGroupName ?? "" as! String + " -> " + assignment.instanceName as! String) {
             assignmentsData.append(["id": assignment.id ?? "" as Any,
                 "deviceUUID": assignment.deviceUUID ?? "" as Any,
                 "deviceGroupName": assignment.deviceGroupName ?? "" as Any,
                 "instanceName": assignment.instanceName as Any, "selected": false])
             }
-            uniqueAssignments.insert(assignment.deviceUUID ?? "" as String + assignment.deviceGroupName ?? "" as! String + " -> " + assignment.instanceName as String)
+            uniqueAssignments.insert(assignment.deviceUUID ?? "" as! String + assignment.deviceGroupName ?? "" as! String + " -> " + assignment.instanceName as! String)
             Log.info(message: "[DEBUG] : uniqueAssignments : \(uniqueAssignments)")
         }
 
