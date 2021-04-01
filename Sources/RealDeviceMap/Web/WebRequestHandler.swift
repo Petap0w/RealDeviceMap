@@ -3192,6 +3192,7 @@ class WebRequestHandler {
             }
 
             var assignmentsData = [[String: Any]]()
+            var uniqueAssignments = Set<String>()
             for assignment in assignments {
                 let device = assignment.deviceUUID ?? "" as String
                 let group = assignment.deviceGroupName ?? "" as String
