@@ -48,6 +48,7 @@ class CircleInstanceController: InstanceControllerProto {
         self.lastCompletedTime = Date()
         self.currentUuidIndexes = [:]
         self.currentUuidSeenTime = [:]
+Log.info(message: "[DEBUG] useRwForRaid : \(useRwForRaid)")
     }
 
     func routeDistance(xcoord: Int, ycoord: Int) -> Int {

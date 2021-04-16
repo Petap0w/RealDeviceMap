@@ -63,6 +63,8 @@ class AutoInstanceController: InstanceControllerProto {
         self.isEvent = isEvent
         update()
 
+Log.info(message: "[DEBUG] useRwForQuest : \(useRwForQuest)")
+        
         try? bootstrap()
         if type == .quest {
             questClearerQueue = Threading.getQueue(name: "\(name)-quest-clearer", type: .serial)
