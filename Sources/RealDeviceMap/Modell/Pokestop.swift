@@ -1155,7 +1155,7 @@ class Pokestop: JSONConvertibleObject, WebHookEvent, Hashable {
         }
 
         var areaString = ""
-        for coordLine in area! {
+        for coordLine in area {
             let lat = coordLine["lat"]
             let lon = coordLine["lon"]
             areaString += "\(lat!),\(lon!)\n"
