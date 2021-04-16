@@ -1106,9 +1106,8 @@ class WebRequestHandler {
                                 }
                             }
                         }
-                        try AssignmentController.global.triggerAssignment(assignment: assignment, force: true)
                     } catch {
-                        response.setBody(string: "Failed to trigger assignment")
+                        response.setBody(string: "Failed to get assignment group quest boundaries")
                         sessionDriver.save(session: request.session!)
                         response.completed(status: .internalServerError)
                         return
@@ -1120,10 +1119,21 @@ class WebRequestHandler {
                                          Coord(lat: minLat, lon: minLon)]
                     try Pokestop.clearQuests(area: bbox)
                 } catch {
-                    response.setBody(string: "Failed to reset quests")
+                    response.setBody(string: "Failed to reset assignment group quests")
                     sessionDriver.save(session: request.session!)
                     response.completed(status: .internalServerError)
                     return
+                }
+                for assignment in assignmentsInGroup {
+                    do {
+                        let instance = try Instance.getByName(name: assignment.instanceName)!
+                        try AssignmentController.global.triggerAssignment(assignment: assignment, force: true)
+                    } catch {
+                        response.setBody(string: "Failed to trigger assignment")
+                        sessionDriver.save(session: request.session!)
+                        response.completed(status: .internalServerError)
+                        return
+                    }
                 }
 
                 response.redirect(path: "/dashboard/assignmentgroups")
