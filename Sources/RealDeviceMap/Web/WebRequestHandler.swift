@@ -1090,18 +1090,18 @@ class WebRequestHandler {
                             let areaType2 = instance.data["area"] as? [[[String: Double]]]
                             if areaType1 != nil {
                                 for coordLine in areaType1! {
-                                    minLat = minLat && coordLine["lat"]! < minLat ? coordLine["lat"]! : minLat
-                                    maxLat = maxLat && coordLine["lat"]! > maxLat ? coordLine["lat"]! : maxLat
-                                    minLon = minLon && coordLine["lon"]! < minLon ? coordLine["lon"]! : minLon
-                                    maxLon = maxLon && coordLine["lon"]! > maxLon ? coordLine["lon"]! : maxLon
+                                    minLat = minLat != nil && coordLine["lat"]! < minLat ? coordLine["lat"]! : minLat
+                                    maxLat = maxLat != nil && coordLine["lat"]! > maxLat ? coordLine["lat"]! : maxLat
+                                    minLon = minLon != nil && coordLine["lon"]! < minLon ? coordLine["lon"]! : minLon
+                                    maxLon = maxLon != nil && coordLine["lon"]! > maxLon ? coordLine["lon"]! : maxLon
                                 }
                             } else if areaType2 != nil {
                                 for geofence in areaType2! {
                                     for coordLine in geofence {
-                                        minLat = minLat && coordLine["lat"]! < minLat ? coordLine["lat"]! : minLat
-                                        maxLat = maxLat && coordLine["lat"]! > maxLat ? coordLine["lat"]! : maxLat
-                                        minLon = minLon && coordLine["lon"]! < minLon ? coordLine["lon"]! : minLon
-                                        maxLon = maxLon && coordLine["lon"]! > maxLon ? coordLine["lon"]! : maxLon
+                                        minLat = minLat != nil && coordLine["lat"]! < minLat ? coordLine["lat"]! : minLat
+                                        maxLat = maxLat != nil && coordLine["lat"]! > maxLat ? coordLine["lat"]! : maxLat
+                                        minLon = minLon != nil && coordLine["lon"]! < minLon ? coordLine["lon"]! : minLon
+                                        maxLon = maxLon != nil && coordLine["lon"]! > maxLon ? coordLine["lon"]! : maxLon
                                     }
                                 }
                             }
