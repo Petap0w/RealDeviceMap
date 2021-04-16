@@ -1078,10 +1078,10 @@ class WebRequestHandler {
                 }
 
                 let assignmentsInGroup = assignments.filter({ assignmentGroup.assignmentIDs.contains($0.id!) })
-                var minLat: Double
-                var maxLat: Double
-                var minLon: Double
-                var maxLon: Double
+                var minLat: Double = 0.0
+                var maxLat: Double = 0.0
+                var minLon: Double = 0.0
+                var maxLon: Double = 0.0
                 for assignment in assignmentsInGroup {
                     do {
                         let instance = try Instance.getByName(name: assignment.instanceName)!
