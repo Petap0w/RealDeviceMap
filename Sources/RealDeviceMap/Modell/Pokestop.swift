@@ -379,7 +379,7 @@ class Pokestop: JSONConvertibleObject, WebHookEvent, Hashable {
                 let info = rewardData.candy
                 infoData["amount"] = info.amount
                 infoData["pokemon_id"] = info.pokemonID.rawValue
-            case .xlCandy: break
+            case .xlCandy:
                 let info = rewardData.xlCandy
                 infoData["amount"] = info.amount
                 infoData["pokemon_id"] = info.pokemonID.rawValue
@@ -1161,7 +1161,7 @@ class Pokestop: JSONConvertibleObject, WebHookEvent, Hashable {
             areaString += "\(lat!),\(lon!)\n"
         }
 */
-        Log.info(message: "[DEBUG] area in clearQuests : \(area)")
+        Log.info(message: "[DEBUG] area in clearQuests : \(area[0])")
         
         let coords = Pokestop.flattenCoords(area: areaString)
         let sql = """
