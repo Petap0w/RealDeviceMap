@@ -1106,10 +1106,6 @@ class WebRequestHandler {
                                 }
                             }
                         }
-                        let bbox: [Coord] = [Coord(lat: minLat, lon: minLon), Coord(lat: minLat, lon: maxLon),
-                                             Coord(lat: maxLat, lon: maxLon), Coord(lat: maxLat, lon: minLon),
-                                             Coord(lat: minLat, lon: minLon)]
-                        try Pokestop.clearQuests(area: bbox)
                         try AssignmentController.global.triggerAssignment(assignment: assignment, force: true)
                     } catch {
                         response.setBody(string: "Failed to trigger assignment")
@@ -1117,6 +1113,17 @@ class WebRequestHandler {
                         response.completed(status: .internalServerError)
                         return
                     }
+                }
+                do {
+                    let bbox: [Coord] = [Coord(lat: minLat, lon: minLon), Coord(lat: minLat, lon: maxLon),
+                                         Coord(lat: maxLat, lon: maxLon), Coord(lat: maxLat, lon: minLon),
+                                         Coord(lat: minLat, lon: minLon)]
+                    try Pokestop.clearQuests(area: bbox)
+                } catch {
+                    response.setBody(string: "Failed to reset quests")
+                    sessionDriver.save(session: request.session!)
+                    response.completed(status: .internalServerError)
+                    return
                 }
 
                 response.redirect(path: "/dashboard/assignmentgroups")
