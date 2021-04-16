@@ -288,7 +288,7 @@ try! DiscordController.global.setup()
 
 // Create Raid images
 let noGenerateImages =
-  (ProcessInfo.processInfo.environment["NO_GENERATE_IMAGES"] ?? false) != nil
+  ProcessInfo.processInfo.environment["NO_GENERATE_IMAGES"] != nil
 if !noGenerateImages {
   Log.info(message: "[MAIN] Starting Images Generator")
   ImageGenerator.generate()
