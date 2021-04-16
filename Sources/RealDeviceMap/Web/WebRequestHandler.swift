@@ -1090,18 +1090,18 @@ class WebRequestHandler {
                             let areaType2 = instance.data["area"] as? [[[String: Double]]]
                             if areaType1 != nil {
                                 for coordLine in areaType1! {
-                                    minLat = coordLine["lat"] < minLat ? coordLine["lat"] : minLat
-                                    maxLat = coordLine["lat"] > maxLat ? coordLine["lat"] : maxLat
-                                    minLon = coordLine["lon"] < minLon ? coordLine["lon"] : minLon
-                                    maxLon = coordLine["lon"] > maxLon ? coordLine["lon"] : maxLon
+                                    minLat = coordLine["lat"]! < minLat ? coordLine["lat"]! : minLat
+                                    maxLat = coordLine["lat"]! > maxLat ? coordLine["lat"]! : maxLat
+                                    minLon = coordLine["lon"]! < minLon ? coordLine["lon"]! : minLon
+                                    maxLon = coordLine["lon"]! > maxLon ? coordLine["lon"]! : maxLon
                                 }
                             } else if areaType2 != nil {
                                 for geofence in areaType2! {
                                     for coordLine in geofence {
-                                        minLat = coordLine["lat"] < minLat ? coordLine["lat"] : minLat
-                                        maxLat = coordLine["lat"] > maxLat ? coordLine["lat"] : maxLat
-                                        minLon = coordLine["lon"] < minLon ? coordLine["lon"] : minLon
-                                        maxLon = coordLine["lon"] > maxLon ? coordLine["lon"] : maxLon
+                                        minLat = coordLine["lat"]! < minLat ? coordLine["lat"]! : minLat
+                                        maxLat = coordLine["lat"]! > maxLat ? coordLine["lat"]! : maxLat
+                                        minLon = coordLine["lon"]! < minLon ? coordLine["lon"]! : minLon
+                                        maxLon = coordLine["lon"]! > maxLon ? coordLine["lon"]! : maxLon
                                     }
                                 }
                             }
