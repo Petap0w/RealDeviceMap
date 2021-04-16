@@ -1078,10 +1078,10 @@ class WebRequestHandler {
                 }
 
                 let assignmentsInGroup = assignments.filter({ assignmentGroup.assignmentIDs.contains($0.id!) })
-                var minLat: Double
-                var maxLat: Double
-                var minLon: Double
-                var maxLon: Double
+                var minLat: Double = 90.0
+                var maxLat: Double = -90.0
+                var minLon: Double = 180.0
+                var maxLon: Double = -180.0
                 for assignment in assignmentsInGroup {
                     do {
                         let instance = try Instance.getByName(name: assignment.instanceName)!
@@ -1090,18 +1090,18 @@ class WebRequestHandler {
                             let areaType2 = instance.data["area"] as? [[[String: Double]]]
                             if areaType1 != nil {
                                 for coordLine in areaType1! {
-                                    minLat = minLat != nil && coordLine["lat"]! < minLat ? coordLine["lat"]! : minLat
-                                    maxLat = maxLat != nil && coordLine["lat"]! > maxLat ? coordLine["lat"]! : maxLat
-                                    minLon = minLon != nil && coordLine["lon"]! < minLon ? coordLine["lon"]! : minLon
-                                    maxLon = maxLon != nil && coordLine["lon"]! > maxLon ? coordLine["lon"]! : maxLon
+                                    minLat = coordLine["lat"]! < minLat ? coordLine["lat"]! : minLat
+                                    maxLat = coordLine["lat"]! > maxLat ? coordLine["lat"]! : maxLat
+                                    minLon = coordLine["lon"]! < minLon ? coordLine["lon"]! : minLon
+                                    maxLon = coordLine["lon"]! > maxLon ? coordLine["lon"]! : maxLon
                                 }
                             } else if areaType2 != nil {
                                 for geofence in areaType2! {
                                     for coordLine in geofence {
-                                        minLat = minLat != nil && coordLine["lat"]! < minLat ? coordLine["lat"]! : minLat
-                                        maxLat = maxLat != nil && coordLine["lat"]! > maxLat ? coordLine["lat"]! : maxLat
-                                        minLon = minLon != nil && coordLine["lon"]! < minLon ? coordLine["lon"]! : minLon
-                                        maxLon = maxLon != nil && coordLine["lon"]! > maxLon ? coordLine["lon"]! : maxLon
+                                        minLat = coordLine["lat"]! < minLat ? coordLine["lat"]! : minLat
+                                        maxLat = coordLine["lat"]! > maxLat ? coordLine["lat"]! : maxLat
+                                        minLon = coordLine["lon"]! < minLon ? coordLine["lon"]! : minLon
+                                        maxLon = coordLine["lon"]! > maxLon ? coordLine["lon"]! : maxLon
                                     }
                                 }
                             }
