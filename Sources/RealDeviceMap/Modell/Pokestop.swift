@@ -1155,13 +1155,13 @@ class Pokestop: JSONConvertibleObject, WebHookEvent, Hashable {
         }
 
         var areaString = ""
-/*        for coordLine in area {
-            let lat = coordLine["lat"]
-            let lon = coordLine["lon"]
+        for coordLine in area {
+            let lat = coordLine.lat
+            let lon = coordLine.lon
             areaString += "\(lat!),\(lon!)\n"
         }
-*/
-        Log.info(message: "[DEBUG] area in clearQuests : \(area[0].lat)")
+
+        Log.info(message: "[DEBUG] areaString in clearQuests : \(areaString)")
         
         let coords = Pokestop.flattenCoords(area: areaString)
         let sql = """
