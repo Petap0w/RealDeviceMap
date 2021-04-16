@@ -1159,7 +1159,7 @@ class Pokestop: JSONConvertibleObject, WebHookEvent, Hashable {
             areaString += "\(coordLine.lat),\(coordLine.lon)\n"
         }
 
-        Log.info(message: "[DEBUG] areaString in clearQuests : \(areaString)")
+        Log.info(message: "[DEBUGDEV] areaString in clearQuests (bbox) : \(areaString)")
         
         let coords = Pokestop.flattenCoords(area: areaString)
         let sql = """
